@@ -58,6 +58,7 @@ Gốc `html { font-size: 16px }`. Giá trị dạng `desktop / mobile`.
 
 | Vai trò | Token Tailwind | Desktop | Mobile | line-height | letter-spacing | Font / weight |
 |---|---|---|---|---|---|---|
+| Hero mặt tiền (dải full-bleed) | `text-hero` | 64px (4rem) | 38px (2.375rem) | 1.05 | -0.03em | Jost 500 |
 | Hero / H1 | `text-display` | 56px (3.5rem) | 34px (2.125rem) | 1.1 | -0.02em | Jost 500 |
 | H2 – tiêu đề khối | `text-h2` | 36px (2.25rem) | 26px (1.625rem) | 1.15 | -0.01em | Jost 500 |
 | H3 | `text-h3` | 24px (1.5rem) | 20px (1.25rem) | 1.25 | -0.01em | Jost 500 |
@@ -280,13 +281,16 @@ body {
 h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: 500; }
 
 /* Tiện ích typography (nếu không tạo bằng plugin Tailwind) */
+.text-hero     { font-family: var(--font-heading); font-weight: 500; font-size: 2.375rem; line-height: 1.05; letter-spacing: -0.03em; }
 .text-display  { font-family: var(--font-heading); font-weight: 500; font-size: 2.125rem; line-height: 1.1;  letter-spacing: -0.02em; }
 .text-h2       { font-family: var(--font-heading); font-weight: 500; font-size: 1.625rem; line-height: 1.15; letter-spacing: -0.01em; }
 .text-overline { font-family: var(--font-heading); font-weight: 500; font-size: 0.75rem;  line-height: 1.4;  letter-spacing: 0.16em; text-transform: uppercase; }
 
 @media (min-width: 1024px) {
+  .text-hero    { font-size: 4rem; }
   .text-display { font-size: 3.5rem; }
   .text-h2      { font-size: 2.25rem; }
+  .text-h3      { font-size: 1.5rem; }
   .text-overline{ font-size: 0.8125rem; }
 }
 

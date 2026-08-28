@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+  <rect width="800" height="1000" fill="#EDE7E1" />
+  
+    <path d="M 301.44 160
+             L 498.56 160
+             L 561.28 204.8
+             L 534.4 272
+             L 498.56 238.4
+             L 588.1600000000001 720
+             L 211.83999999999997 720
+             L 301.44 238.4
+             L 265.6 272
+             L 238.71999999999997 204.8
+             Z"
+          fill="#CBC3B8" />
+    <circle cx="400" cy="126.4" r="49.28000000000001" fill="#CBC3B8" />
+  <text x="400" y="936" text-anchor="middle"
+        font-family="Jost, system-ui, sans-serif" font-size="34" letter-spacing="8"
+        fill="#1A1A1A" opacity="0.6">ĐẦM</text>
+</svg>

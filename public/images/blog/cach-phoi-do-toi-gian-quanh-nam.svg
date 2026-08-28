@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#E4E6E4" />
+  
+    <path d="M 512 80
+             L 688 80
+             L 744 119.68
+             L 720 179.2
+             L 688 149.44
+             L 768 576
+             L 432 576
+             L 512 149.44
+             L 480 179.2
+             L 456 119.68
+             Z"
+          fill="#C8C0B5" />
+    <circle cx="600" cy="50.24" r="44" fill="#C8C0B5" />
+  <text x="60" y="710" font-family="Jost, system-ui, sans-serif" font-size="48"
+        fill="#1A1A1A" opacity="0.7">Phối đồ tối giản</text>
+  
+</svg>

@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Nguồn token: design.md §7.1 */
+:root {
+  --font-heading: var(--font-jost), system-ui, "Segoe UI", Arial, sans-serif;
+  --font-body: var(--font-be-vietnam-pro), system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+
+  /* Neutral */
+  --color-ink: #1a1a1a;
+  --color-ink-soft: #3d3d3d;
+  --color-muted: #6b6b6b;
+  --color-line: #e5e2dd;
+  --color-surface: #f6f4f1;
+  --color-surface-2: #eeebe6;
+  --color-bg: #ffffff;
+  --color-footer-bg: #161616;
+  --color-footer-fg: #b8b4ae;
+  --color-footer-fg-strong: #ffffff;
+
+  /* Accent & state */
+  --color-accent: #8a6a4f;
+  --color-accent-hover: #6f5540;
+  --color-accent-fg: #ffffff;
+  --color-sale: #b23b3b;
+  --color-success: #2e7d5b;
+  --color-error: #c0392b;
+  --color-info: #2f6f8f;
+  --color-rating: #c99700;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading);
+  font-weight: 500;
+}
+
+@layer components {
+  /* Tiện ích typography không có sẵn trong Tailwind scale */
+  .text-hero {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: 2.375rem;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+  }
+  .text-display {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: 2.125rem;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .text-overline {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  /* design.md §3.3 — focus ring nhất quán trên phần tử tương tác */
+  .focus-ring {
+    @apply outline-none focus-visible:ring-2 focus-visible:ring-ink/15 focus-visible:border-ink;
+  }
+}
+
+/* design.md §7.1 — desktop bump cho các cỡ chữ có 2 giá trị desktop/mobile */
+@media (min-width: 1024px) {
+  .text-hero {
+    font-size: 4rem;
+  }
+  .text-display {
+    font-size: 3.5rem;
+  }
+  .text-h2 {
+    font-size: 2.25rem;
+  }
+  .text-h3 {
+    font-size: 1.5rem;
+  }
+  .text-overline {
+    font-size: 0.8125rem;
+  }
+}
+
+/* design.md §6 — tôn trọng prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

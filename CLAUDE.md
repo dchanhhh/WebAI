@@ -99,8 +99,6 @@ Ba quy tắc dưới đây áp dụng cho **mọi** thay đổi giao diện, kh�
 
 ## Lệnh thường dùng
 
-> Dự án chưa được scaffold; các lệnh dưới đây áp dụng sau khi mốc M0 hoàn tất.
-
 ```bash
 npm run dev                 # chạy dev server
 npm run build && npm start  # build production

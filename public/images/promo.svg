@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="700" viewBox="0 0 1600 700">
+  <rect width="1600" height="700" fill="#E7E1D9" />
+  
+    <path d="M 723 70
+             L 877 70
+             L 926 104.72
+             L 905 156.8
+             L 877 130.76
+             L 947 504
+             L 653 504
+             L 723 130.76
+             L 695 156.8
+             L 674 104.72
+             Z"
+          fill="#C8C0B5" />
+    <circle cx="800" cy="43.96" r="38.5" fill="#C8C0B5" />
+  <text x="60" y="610" font-family="Jost, system-ui, sans-serif" font-size="42"
+        fill="#1A1A1A" opacity="0.7">Ưu đãi đặc biệt</text>
+  
+</svg>
