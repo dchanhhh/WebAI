@@ -1,7 +1,7 @@
 export const SITE_NAME = "Nhà May";
 export const SITE_TAGLINE = "Thời trang thiết kế tối giản";
 export const SITE_DESCRIPTION =
-  "Nhà May — thương hiệu thời trang thiết kế tối giản: đầm, áo, chân váy và phụ kiện chọn lọc, may đo tinh tế trên chất liệu bền đẹp.";
+  "Nhà May — thương hiệu thời trang thiết kế tối giản: đầm, áo, quần, chân váy và set đồ chọn lọc, may đo tinh tế trên chất liệu bền đẹp.";
 
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";

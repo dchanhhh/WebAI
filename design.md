@@ -9,7 +9,7 @@ Tài liệu này là **nguồn token duy nhất** cho `tailwind.config.ts` và
 token ở đây, không hard-code giá trị rời rạc.
 
 - Ngôn ngữ giao diện: tiếng Việt (`lang="vi"`), đơn vị tiền: VND.
-- Chốt: font tiêu đề **Jost**, font thân bài **Be Vietnam Pro**, màu nhấn **nâu camel `#8A6A4F`**.
+- Chốt: font tiêu đề **Montserrat**, font thân bài **Be Vietnam Pro**, màu nhấn **nâu camel `#8A6A4F`**.
 - Giai đoạn 1: **không làm dark mode**.
 
 ---
@@ -33,13 +33,15 @@ token ở đây, không hard-code giá trị rời rạc.
 
 | Vai trò | Font | Nguồn | Cân nặng nạp | CSS var |
 |---|---|---|---|---|
-| Tiêu đề / hiển thị | **Jost** | Google Fonts, `next/font` | 400, 500, 600 | `--font-heading` |
+| Tiêu đề / hiển thị | **Montserrat** | Google Fonts, `next/font` | 500, 600, 700 | `--font-heading` |
 | Thân bài / UI | **Be Vietnam Pro** | Google Fonts, `next/font` | 400, 500, 600, 700 | `--font-body` |
 
-- Cả hai font đều có bộ ký tự **Latin Extended** → hiển thị đủ dấu tiếng Việt.
+- Cả hai font đều có **`vietnamese` subset** trên Google Fonts → hiển thị đủ dấu
+  tiếng Việt, không bị rơi ký tự sang font hệ thống (nguyên nhân "chữ to chữ nhỏ"
+  khi trước dùng Jost — Jost chỉ có `latin` / `latin-ext`).
 - Nạp qua `next/font/google` với `display: "swap"`, `subsets: ["latin", "latin-ext", "vietnamese"]`.
 - Fallback stack: `--font-body` → `"Be Vietnam Pro", system-ui, "Segoe UI", Roboto, Arial, sans-serif`;
-  `--font-heading` → `"Jost", system-ui, "Segoe UI", Arial, sans-serif`.
+  `--font-heading` → `"Montserrat", system-ui, "Segoe UI", Arial, sans-serif`.
 
 ### 2.2. Cân nặng dùng
 
@@ -58,16 +60,16 @@ Gốc `html { font-size: 16px }`. Giá trị dạng `desktop / mobile`.
 
 | Vai trò | Token Tailwind | Desktop | Mobile | line-height | letter-spacing | Font / weight |
 |---|---|---|---|---|---|---|
-| Hero mặt tiền (dải full-bleed) | `text-hero` | 64px (4rem) | 38px (2.375rem) | 1.05 | -0.03em | Jost 500 |
-| Hero / H1 | `text-display` | 56px (3.5rem) | 34px (2.125rem) | 1.1 | -0.02em | Jost 500 |
-| H2 – tiêu đề khối | `text-h2` | 36px (2.25rem) | 26px (1.625rem) | 1.15 | -0.01em | Jost 500 |
-| H3 | `text-h3` | 24px (1.5rem) | 20px (1.25rem) | 1.25 | -0.01em | Jost 500 |
-| H4 / tên sản phẩm | `text-h4` | 18px (1.125rem) | 16px (1rem) | 1.35 | 0 | Jost 500 / Be Vietnam Pro 500 |
+| Hero mặt tiền (dải full-bleed) | `text-hero` | 64px (4rem) | 38px (2.375rem) | 1.05 | -0.03em | Montserrat 500 |
+| Hero / H1 | `text-display` | 56px (3.5rem) | 34px (2.125rem) | 1.1 | -0.02em | Montserrat 500 |
+| H2 – tiêu đề khối | `text-h2` | 36px (2.25rem) | 26px (1.625rem) | 1.15 | -0.01em | Montserrat 500 |
+| H3 | `text-h3` | 24px (1.5rem) | 20px (1.25rem) | 1.25 | -0.01em | Montserrat 500 |
+| H4 / tên sản phẩm | `text-h4` | 18px (1.125rem) | 16px (1rem) | 1.35 | 0 | Montserrat 500 / Be Vietnam Pro 500 |
 | Body lớn (intro, mô tả) | `text-lg` | 18px | 16px | 1.7 | 0 | Be Vietnam Pro 400 |
 | Body mặc định | `text-base` | 16px | 15px | 1.7 | 0 | Be Vietnam Pro 400 |
 | Nhỏ / phụ chú (meta, breadcrumb) | `text-sm` | 14px | 13px | 1.6 | 0 | Be Vietnam Pro 400 |
 | Rất nhỏ / nhãn | `text-xs` | 12px | 12px | 1.5 | 0.12em | Be Vietnam Pro 500, VIẾT HOA |
-| Eyebrow / nhãn nút / menu | `text-overline` | 13px | 12px | 1.4 | 0.16em | Jost 500, VIẾT HOA |
+| Eyebrow / nhãn nút / menu | `text-overline` | 13px | 12px | 1.4 | 0.16em | Montserrat 500, VIẾT HOA |
 
 ### 2.4. Quy tắc dùng
 
@@ -234,6 +236,10 @@ Biến thể: `primary` (nền `accent`), `secondary` (viền `ink`), `ghost` (c
 - Easing: `cubic-bezier(0.4, 0, 0.2, 1)`.
 - Hover ảnh sản phẩm: đổi ảnh mờ dần 200ms; **không** dùng scale/zoom mạnh.
 - Cart drawer / menu mobile: trượt ngang 240ms.
+- Carousel hero: tự chuyển mỗi **10s**, chuyển cảnh **crossfade 500ms**
+  `cubic-bezier(0.4, 0, 0.2, 1)` (chỉ animate `opacity` — không layout shift);
+  dừng khi hover / focus trong banner / tab ẩn. Khi `prefers-reduced-motion: reduce`
+  → tắt tự chuyển, chỉ còn nút điều khiển; đổi slide tức thời.
 - Khi `prefers-reduced-motion: reduce` → tắt mọi transition/animation không thiết yếu.
 
 ---
@@ -245,7 +251,7 @@ Biến thể: `primary` (nền `accent`), `secondary` (viền `ink`), `ghost` (c
 ```css
 :root {
   /* Fonts (giá trị --font-* do next/font inject qua biến của nó, map lại tại đây) */
-  --font-heading: var(--font-jost), system-ui, "Segoe UI", Arial, sans-serif;
+  --font-heading: var(--font-montserrat), "Montserrat", system-ui, "Segoe UI", Arial, sans-serif;
   --font-body: var(--font-be-vietnam-pro), system-ui, "Segoe UI", Roboto, Arial, sans-serif;
 
   /* Neutral */
@@ -359,13 +365,13 @@ export default {
 ### 7.3. Nạp font (`src/app/layout.tsx`)
 
 ```ts
-import { Jost, Be_Vietnam_Pro } from "next/font/google";
+import { Montserrat, Be_Vietnam_Pro } from "next/font/google";
 
-const jost = Jost({
-  subsets: ["latin", "latin-ext"],
-  weight: ["400", "500", "600"],
+const montserrat = Montserrat({
+  subsets: ["latin", "latin-ext", "vietnamese"],
+  weight: ["500", "600", "700"],
   display: "swap",
-  variable: "--font-jost",
+  variable: "--font-montserrat",
 });
 
 const beVietnamPro = Be_Vietnam_Pro({
@@ -375,7 +381,7 @@ const beVietnamPro = Be_Vietnam_Pro({
   variable: "--font-be-vietnam-pro",
 });
 
-// <html lang="vi" className={`${jost.variable} ${beVietnamPro.variable}`}>
+// <html lang="vi" className={`${montserrat.variable} ${beVietnamPro.variable}`}>
 ```
 
 ---

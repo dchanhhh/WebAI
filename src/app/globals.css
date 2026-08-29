@@ -4,7 +4,7 @@
 
 /* Nguồn token: design.md §7.1 */
 :root {
-  --font-heading: var(--font-jost), system-ui, "Segoe UI", Arial, sans-serif;
+  --font-heading: var(--font-montserrat), "Montserrat", system-ui, "Segoe UI", Arial, sans-serif;
   --font-body: var(--font-be-vietnam-pro), system-ui, "Segoe UI", Roboto, Arial, sans-serif;
 
   /* Neutral */

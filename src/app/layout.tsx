@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { Jost, Be_Vietnam_Pro } from "next/font/google";
+import { Montserrat, Be_Vietnam_Pro } from "next/font/google";
 import "./globals.css";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL, SITE_TAGLINE } from "@/lib/constants";
 
-const jost = Jost({
-  subsets: ["latin", "latin-ext"],
-  weight: ["400", "500", "600"],
+const montserrat = Montserrat({
+  subsets: ["latin", "latin-ext", "vietnamese"],
+  weight: ["500", "600", "700"],
   display: "swap",
-  variable: "--font-jost",
+  variable: "--font-montserrat",
 });
 
 const beVietnamPro = Be_Vietnam_Pro({
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="vi" className={`${jost.variable} ${beVietnamPro.variable}`}>
+    <html lang="vi" className={`${montserrat.variable} ${beVietnamPro.variable}`}>
       <body className="flex min-h-screen flex-col">{children}</body>
     </html>
   );

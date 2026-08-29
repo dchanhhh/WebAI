@@ -26,10 +26,6 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-bg">
-      <div className="bg-ink text-center text-overline text-bg">
-        <p className="container py-2">Ưu đãi hè — giảm đến 40% cho bộ sưu tập chọn lọc</p>
-      </div>
-
       <div className="border-b border-line">
         <div className="container flex h-16 items-center justify-between gap-4 lg:h-20">
           <button

@@ -26,8 +26,9 @@ Kế hoạch triển khai chi tiết theo mốc: xem
   lại trước khi sửa.
 - Các quy ước bắt buộc rút từ `design.md` (không lặp lại toàn bộ ở đây — luôn mở
   `design.md` để tra):
-  - Font tiêu đề **Jost**, font thân bài **Be Vietnam Pro**; nạp qua `next/font`
-    với subset `latin`, `latin-ext`, `vietnamese`.
+  - Font tiêu đề **Montserrat**, font thân bài **Be Vietnam Pro**; nạp qua
+    `next/font` với subset `latin`, `latin-ext`, `vietnamese` (Montserrat có
+    `vietnamese` subset đầy đủ — không dùng Jost vì thiếu dấu tiếng Việt).
   - Màu nhấn duy nhất: nâu camel `accent` `#8A6A4F` — dùng rất tiết chế.
   - Menu / nhãn nút / eyebrow / badge: **VIẾT HOA + letter-spacing rộng**
     (`text-overline` hoặc `text-xs`).

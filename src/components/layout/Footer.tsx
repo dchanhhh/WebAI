@@ -12,8 +12,9 @@ const infoLinks = [
 const discoverLinks = [
   { label: "Đầm", href: "/danh-muc/dam" },
   { label: "Áo", href: "/danh-muc/ao" },
-  { label: "Quần & chân váy", href: "/danh-muc/quan" },
-  { label: "Phụ kiện", href: "/danh-muc/phu-kien" },
+  { label: "Quần", href: "/danh-muc/quan" },
+  { label: "Chân váy", href: "/danh-muc/chan-vay" },
+  { label: "Set đồ", href: "/danh-muc/set-do" },
 ];
 
 const payments = ["Visa", "Mastercard", "JCB", "Momo", "VNPay"];
@@ -24,7 +25,7 @@ export function Footer() {
       <div className="container grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-4 lg:py-20">
         <div>
           <p className="text-h3 text-footer-fg-strong">{SITE_NAME}</p>
-          <p className="mt-3 max-w-xs text-sm">{SITE_TAGLINE}. Đầm, áo, chân váy và phụ kiện chọn lọc, may đo tinh tế.</p>
+          <p className="mt-3 max-w-xs text-sm">{SITE_TAGLINE}. Đầm, áo, quần, chân váy và set đồ chọn lọc, may đo tinh tế.</p>
         </div>
 
         <div>

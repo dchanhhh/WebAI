@@ -95,24 +95,26 @@ function write(rel, content) {
 
 console.log("Sinh ảnh placeholder...");
 
-// Sản phẩm: slug -> nhãn hiển thị
+// Sản phẩm: slug -> nhãn hiển thị.
+// Lưu ý: bản seed hiện dùng ảnh thật (.jpg) tải bằng scripts/fetch-nem-images.mjs.
+// Danh sách này chỉ để sinh ảnh .svg dự phòng, không ghi đè ảnh .jpg.
 const PRODUCTS = [
   ["dam-lua-eterna-den", "Đầm Eterna"],
   ["dam-du-tiec-spark-xanh-reu", "Đầm Spark"],
   ["dam-da-hoi-alnich-xanh-navy", "Đầm Alnich"],
   ["dam-suong-meena-do-man", "Đầm Meena"],
+  ["dam-hoa-tiet-co-beo", "Đầm Cổ Bèo"],
   ["ao-so-mi-lua-camille-trang", "Áo Camille"],
-  ["ao-blazer-linen-be", "Blazer Linen"],
-  ["ao-thun-cotton-basic-xam", "Áo Thun Basic"],
-  ["ao-kieu-tay-phong-nu", "Áo Kiểu Tay Phồng"],
-  ["chan-vay-midi-xep-ly-nau", "Chân Váy Midi"],
+  ["ao-kieu-dap-hoa-noi", "Áo Đáp Hoa Nổi"],
+  ["ao-thun-cotton-basic-xam", "Áo Phông Dáng Rộng"],
+  ["ao-len-co-be", "Áo Len Cổ Trụ"],
   ["quan-au-ong-suong-den", "Quần Âu Ống Suông"],
-  ["quan-jeans-straight-xanh", "Quần Jeans Straight"],
-  ["chan-vay-but-chi-kem", "Chân Váy Bút Chì"],
-  ["giay-loafer-da-nau", "Giày Loafer"],
-  ["giay-cao-got-mule-be", "Giày Mule"],
-  ["tui-tote-canvas-be", "Túi Tote Canvas"],
-  ["khan-lua-vuong-hoa-tiet", "Khăn Lụa Vuông"],
+  ["quan-jeans-straight-xanh", "Quần Jeans Ống Rộng"],
+  ["quan-baggy-den", "Quần Xếp Ly Ống Côn"],
+  ["chan-vay-midi-xep-ly-nau", "Chân Váy Xếp Ly Nâu"],
+  ["chan-vay-voan-hoa-tiet", "Chân Váy Voan Hoạ Tiết"],
+  ["set-bo-thiet-ke-hw6905", "Set Áo Khoác & Váy"],
+  ["set-bo-linen-thanh-lich", "Set Polo & Chân Váy"],
 ];
 
 PRODUCTS.forEach(([slug, label], i) => {
@@ -123,19 +125,18 @@ PRODUCTS.forEach(([slug, label], i) => {
 
 // Danh mục
 [
+  ["dam", "Đầm"],
   ["ao", "Áo"],
   ["quan", "Quần"],
-  ["dam", "Đầm"],
-  ["giay-dep", "Giày dép"],
-  ["phu-kien", "Phụ kiện"],
+  ["chan-vay", "Chân váy"],
+  ["set-do", "Set đồ"],
 ].forEach(([slug, label], i) => {
   write(`categories/${slug}.svg`, tileSvg({ tone: TONES[i], label }));
 });
 
-// Hero + banner
+// Banner dự phòng (bản seed dùng /images/hero.jpg, /images/new-arrivals.jpg)
 write("hero.svg", bannerSvg({ w: 1600, h: 2000, tone: PALETTE.surface2, label: "Trang phục dự tiệc" }));
-write("new-arrivals.svg", bannerSvg({ w: 1400, h: 1000, tone: PALETTE.surface, label: "Bộ sưu tập Luce", sub: "Đầm tay dài thanh lịch" }));
-write("promo.svg", bannerSvg({ w: 1600, h: 700, tone: "#E7E1D9", label: "Ưu đãi đặc biệt" }));
+write("new-arrivals.svg", bannerSvg({ w: 1400, h: 1000, tone: PALETTE.surface, label: "Bộ sưu tập Luce", sub: "Đầm dáng đuôi cá" }));
 
 // Blog
 [

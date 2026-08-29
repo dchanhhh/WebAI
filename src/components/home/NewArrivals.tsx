@@ -8,8 +8,8 @@ export function NewArrivals() {
       <Reveal className="mx-auto grid max-w-[1440px] items-center gap-8 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
         <div className="relative aspect-[5/4] w-full lg:aspect-[4/3]">
           <Image
-            src="/images/new-arrivals.svg"
-            alt="Bộ sưu tập Luce — đầm tay dài"
+            src="/images/new-arrivals.jpg"
+            alt="Bộ sưu tập Luce — đầm dáng đuôi cá"
             fill
             sizes="(min-width:1024px) 55vw, 100vw"
             className="object-cover"
@@ -19,8 +19,8 @@ export function NewArrivals() {
           <p className="text-overline text-muted">Hàng mới về</p>
           <h2 className="mt-3 text-display text-ink">Bộ sưu tập Luce</h2>
           <p className="mt-4 max-w-md text-lg text-ink-soft">
-            Đầm tay dài thanh lịch — dáng suông nhẹ, cổ tinh tế, tay mềm mại. Một lựa chọn duyên dáng
-            cho tiết trời chuyển mùa.
+            Đầm dáng đuôi cá thanh lịch — phom ôm nhẹ tôn eo, chân váy loe mềm mại. Một lựa chọn duyên
+            dáng cho những buổi hẹn quan trọng.
           </p>
           <div className="mt-7">
             <ButtonLink href="/shop?sort=moi-nhat" variant="secondary" size="md">

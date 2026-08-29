@@ -1,4 +1,4 @@
-import { Hero } from "@/components/home/Hero";
+import { HeroCarousel } from "@/components/home/HeroCarousel";
 import { LatestCollection } from "@/components/home/LatestCollection";
 import { NewArrivals } from "@/components/home/NewArrivals";
 import { CollectionTiles } from "@/components/home/CollectionTiles";
@@ -10,7 +10,7 @@ import { BenefitBanners } from "@/components/home/BenefitBanners";
 export default function HomePage() {
   return (
     <>
-      <Hero />
+      <HeroCarousel />
       <LatestCollection />
       <NewArrivals />
       <CollectionTiles />
