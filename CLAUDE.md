@@ -13,7 +13,7 @@ khoản, không cổng thanh toán) → nhận mã đơn. Admin đăng nhập t�
 quản lý sản phẩm, danh mục và xử lý đơn.
 
 Kế hoạch triển khai chi tiết theo mốc: xem
-`C:\Users\Hanh\.claude\plans\h-y-l-p-k-ho-ch-kind-reddy.md`.
+`C:\Users\Hanh\.claude\plans\h-y-l-n-m-t-k-luminous-wolf.md`.
 
 ## Nguyên tắc số 1 — `design.md` là nguồn sự thật về thiết kế
 
