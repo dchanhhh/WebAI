@@ -29,3 +29,12 @@ ngang file này); rule có `paths` chỉ nạp khi Claude mở file khớp mẫu
 
 **Nguyên tắc số 1:** nếu yêu cầu của người dùng mâu thuẫn với `design.md`, nêu rõ
 mâu thuẫn và hỏi lại trước khi sửa.
+
+## Git Worktrees Workflow
+
+Khi cần phát triển nhiều tính năng song song:
+
+1. Tạo worktree riêng cho mỗi tính năng: `git worktree add ../[project]-[feature] [feature]`
+2. Mỗi worktree là thư mục độc lập — agent chỉ làm việc trong thư mục của mình.
+3. Không sửa các file shared trừ khi được yêu cầu rõ ràng.
+4. Sau khi xong: merge về `main`, xoá worktree đã dùng (`git worktree remove …`).
