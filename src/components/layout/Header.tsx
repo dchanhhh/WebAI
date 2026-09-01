@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { NAV_LINKS, SITE_NAME } from "@/lib/constants";
 import { useCart, selectCount } from "@/lib/cart-store";
@@ -40,9 +41,17 @@ export function Header() {
 
           <Link
             href="/"
-            className="text-h3 font-medium tracking-[0.02em] text-ink md:text-h2"
+            className="shrink-0"
+            aria-label={`${SITE_NAME} — trang chủ`}
           >
-            {SITE_NAME}
+            <Image
+              src="/images/logo_light.png"
+              alt={SITE_NAME}
+              width={1774}
+              height={887}
+              priority
+              className="h-8 w-auto lg:h-10"
+            />
           </Link>
 
           <nav className="hidden md:flex md:items-center md:gap-7">
@@ -110,7 +119,13 @@ export function Header() {
           )}
         >
           <div className="flex items-center justify-between border-b border-line px-5 py-4">
-            <span className="text-h4 text-ink">{SITE_NAME}</span>
+            <Image
+              src="/images/logo_light.png"
+              alt={SITE_NAME}
+              width={1774}
+              height={887}
+              className="h-7 w-auto"
+            />
             <button
               type="button"
               onClick={() => setMenuOpen(false)}

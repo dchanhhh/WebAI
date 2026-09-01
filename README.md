@@ -1,4 +1,4 @@
-# WebAI — Website bán quần áo thời trang ("Nhà May")
+# WebAI — Website bán quần áo thời trang ("Luméa")
 
 Website thương mại điện tử bán quần áo, giao diện **tiếng Việt**, tiền tệ **VND**.
 Thẩm mỹ lấy cảm hứng từ demo "Fashion Designer Boutique 02": tối giản, trung tính,

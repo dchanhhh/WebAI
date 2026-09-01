@@ -148,6 +148,6 @@ write("new-arrivals.svg", bannerSvg({ w: 1400, h: 1000, tone: PALETTE.surface, l
 });
 
 // OG image
-write("og.svg", bannerSvg({ w: 1200, h: 630, tone: PALETTE.surface, label: "NHÀ MAY", sub: "Thời trang thiết kế tối giản" }));
+write("og.svg", bannerSvg({ w: 1200, h: 630, tone: PALETTE.surface, label: "LUMÉA", sub: "Thời trang thiết kế tối giản" }));
 
 console.log("Xong.");

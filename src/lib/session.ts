@@ -2,7 +2,7 @@
 // Dùng chung bởi middleware (Edge) và auth.ts (Node).
 import { jwtVerify } from "jose";
 
-export const ADMIN_COOKIE_NAME = "nhamay_admin";
+export const ADMIN_COOKIE_NAME = "lumea_admin";
 export const SESSION_MAX_AGE = 60 * 60 * 24 * 7; // 7 ngày
 
 export function getSessionSecret(): Uint8Array {

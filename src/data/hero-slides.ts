@@ -22,7 +22,7 @@ export const heroSlides: HeroSlide[] = [
     ctaLabel: "Xem bộ sưu tập",
     ctaHref: "/shop",
     image: "/images/hero.jpg",
-    imageAlt: "Người mẫu trong đầm voan hoạ tiết của Nhà May",
+    imageAlt: "Người mẫu trong đầm voan hoạ tiết của Luméa",
   },
   {
     eyebrow: "Hàng mới về",

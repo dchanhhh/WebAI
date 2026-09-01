@@ -1,9 +1,10 @@
 import Link from "next/link";
+import Image from "next/image";
 import { NewsletterForm } from "@/components/layout/NewsletterForm";
 import { SITE_NAME, SITE_TAGLINE, CONTACT } from "@/lib/constants";
 
 const infoLinks = [
-  { label: "Về Nhà May", href: "/gioi-thieu" },
+  { label: "Về Luméa", href: "/gioi-thieu" },
   { label: "Câu chuyện thương hiệu", href: "/gioi-thieu#cau-chuyen" },
   { label: "Blog", href: "/blog" },
   { label: "Liên hệ", href: "/lien-he" },
@@ -24,7 +25,19 @@ export function Footer() {
     <footer className="bg-footer-bg text-footer-fg">
       <div className="container grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-4 lg:py-20">
         <div>
-          <p className="text-h3 text-footer-fg-strong">{SITE_NAME}</p>
+          <Link
+            href="/"
+            aria-label={`${SITE_NAME} — trang chủ`}
+            className="-ml-[9px] inline-block"
+          >
+            <Image
+              src="/images/logo_dark.png"
+              alt={SITE_NAME}
+              width={1774}
+              height={887}
+              className="h-10 w-auto mix-blend-lighten"
+            />
+          </Link>
           <p className="mt-3 max-w-xs text-sm">{SITE_TAGLINE}. Đầm, áo, quần, chân váy và set đồ chọn lọc, may đo tinh tế.</p>
         </div>
 

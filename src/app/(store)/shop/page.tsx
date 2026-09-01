@@ -18,7 +18,7 @@ import {
 
 export const metadata: Metadata = {
   title: "Sản phẩm",
-  description: "Toàn bộ sản phẩm của Nhà May — đầm, áo, quần, chân váy, giày dép và phụ kiện.",
+  description: "Toàn bộ sản phẩm của Luméa — đầm, áo, quần, chân váy, giày dép và phụ kiện.",
 };
 
 export default async function ShopPage({

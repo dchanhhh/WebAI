@@ -5,7 +5,7 @@ export function Testimonials() {
   return (
     <Section surface>
       <p className="text-overline text-muted">Cảm nhận</p>
-      <h2 className="mt-2 max-w-lg text-display text-ink">Khách hàng nói gì về Nhà May</h2>
+      <h2 className="mt-2 max-w-lg text-display text-ink">Khách hàng nói gì về Luméa</h2>
 
       <div className="mt-12 grid gap-x-12 gap-y-10 sm:grid-cols-2 lg:mt-16">
         {testimonials.map((t) => (

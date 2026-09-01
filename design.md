@@ -83,6 +83,32 @@ Gốc `html { font-size: 16px }`. Giá trị dạng `desktop / mobile`.
 - Đoạn văn dài giới hạn ~70 ký tự/dòng (`max-w-[70ch]` hoặc `max-w-prose`).
 - Khoảng cách sau tiêu đề khối: 48–72px (`mb-12` … `mb-18`).
 
+### 2.5. Logo / wordmark
+
+Thương hiệu **Luméa** dùng logo ảnh raster (chữ serif riêng + nhánh lá nâu/kem,
+không phải Montserrat). Đây là **ngoại lệ có chủ đích** với quy ước "wordmark =
+chữ Montserrat" ở trên — chỉ áp dụng cho phần nhận diện thương hiệu, không lan
+sang tiêu đề nội dung.
+
+- **Hai file**, mỗi bản nền raster bệt sẵn (không alpha), tỉ lệ ~2:1 (1774×887):
+  - `public/images/logo_light.png` — chữ nâu đậm trên **nền trắng**, dùng cho
+    **nền sáng**. Nền trắng khớp `--color-bg` (`#ffffff`) nên hoà liền ở header,
+    không cần blend-mode.
+  - `public/images/logo_dark.png` — chữ kem trên **nền gần đen**, dùng cho
+    **nền tối**. Đặt trên `--color-footer-bg` (`#161616`) kèm
+    `mix-blend-lighten` để nền bệt của ảnh nhoà đúng vào nền footer, chỉ còn
+    phần chữ sáng.
+- **Header** (nền sáng): `logo_light.png` trong `next/image` (`priority`,
+  `alt` = `SITE_NAME`), cao **32px** (mobile) → **40px** (≥ `lg`), `w-auto`.
+  Drawer mobile dùng cùng ảnh, cao 28px.
+- **Footer** (nền tối): `logo_dark.png`, cao **40px** (`h-10`), bọc trong
+  `<Link href="/">` có `mix-blend-lighten`. Ảnh `logo_dark.png` chừa ~11.6%
+  khoảng trắng bên trái nên link thêm `-ml-[9px]` để mép chữ "L" thẳng cột với
+  đoạn tagline ngay dưới.
+- Hằng `SITE_NAME = "Luméa"` vẫn là nguồn cho `alt`, `<title>`, metadata.
+- Tagline hệ thống giữ nguyên **"Thời trang thiết kế tối giản"** — không đổi theo
+  chữ "OFFICE FASHION" trên bản logo lockup.
+
 ---
 
 ## 3. Quy ước màu sắc

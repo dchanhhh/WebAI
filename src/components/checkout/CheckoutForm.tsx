@@ -184,7 +184,7 @@ export function CheckoutForm() {
           {pending ? "Đang xử lý…" : "Xác nhận đặt hàng"}
         </Button>
         <p className="mt-3 text-center text-sm text-muted">
-          Bằng việc đặt hàng, bạn đồng ý với điều khoản của Nhà May.
+          Bằng việc đặt hàng, bạn đồng ý với điều khoản của Luméa.
         </p>
       </aside>
     </form>

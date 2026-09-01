@@ -5,7 +5,7 @@ import { CONTACT } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Liên hệ",
-  description: "Thông tin liên hệ và hỗ trợ khách hàng của Nhà May.",
+  description: "Thông tin liên hệ và hỗ trợ khách hàng của Luméa.",
 };
 
 export default function ContactPage() {
@@ -46,7 +46,7 @@ export default function ContactPage() {
         <div className="mt-12 rounded-sm border border-line bg-surface p-6 text-sm text-ink-soft">
           <p className="text-h4 text-ink">Đổi trả & bảo hành</p>
           <p className="mt-2 max-w-prose text-muted">
-            Nhà May hỗ trợ đổi size hoặc hoàn tiền trong vòng 30 ngày với sản phẩm còn nguyên tem mác
+            Luméa hỗ trợ đổi size hoặc hoàn tiền trong vòng 30 ngày với sản phẩm còn nguyên tem mác
             và chưa qua sử dụng. Vui lòng giữ lại mã đơn hàng để đối chiếu.
           </p>
         </div>

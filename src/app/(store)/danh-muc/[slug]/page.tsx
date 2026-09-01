@@ -33,7 +33,7 @@ export async function generateMetadata({
   if (!cat) return {};
   return {
     title: cat.name,
-    description: cat.description ?? `Bộ sưu tập ${cat.name} của Nhà May.`,
+    description: cat.description ?? `Bộ sưu tập ${cat.name} của Luméa.`,
   };
 }
 
