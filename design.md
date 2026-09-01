@@ -266,6 +266,8 @@ Biến thể: `primary` (nền `accent`), `secondary` (viền `ink`), `ghost` (c
   `cubic-bezier(0.4, 0, 0.2, 1)` (chỉ animate `opacity` — không layout shift);
   dừng khi hover / focus trong banner / tab ẩn. Khi `prefers-reduced-motion: reduce`
   → tắt tự chuyển, chỉ còn nút điều khiển; đổi slide tức thời.
+- Ảnh (`next/image`) hiển thị skeleton nền `surface-2` với `animate-pulse` cho
+  tới khi ảnh tải xong; `prefers-reduced-motion: reduce` → giữ nền tĩnh, tắt pulse.
 - Khi `prefers-reduced-motion: reduce` → tắt mọi transition/animation không thiết yếu.
 
 ---

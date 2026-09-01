@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { ImageWithSkeleton } from "@/components/ui/ImageWithSkeleton";
 import { cn } from "@/lib/utils";
 
 export function ProductGallery({
@@ -41,7 +42,7 @@ export function ProductGallery({
 
       <div className="relative aspect-[3/4] w-full overflow-hidden bg-surface-2">
         {current.url ? (
-          <Image
+          <ImageWithSkeleton
             src={current.url}
             alt={current.alt || name}
             fill

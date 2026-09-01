@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { ImageWithSkeleton } from "@/components/ui/ImageWithSkeleton";
 import { Price } from "@/components/ui/Price";
 import { Badge } from "@/components/ui/Badge";
 import { AddToCartButton } from "@/components/product/AddToCartButton";
@@ -21,7 +22,7 @@ export function ProductCard({ product }: { product: ProductListItem }) {
         className="relative block aspect-[3/4] overflow-hidden bg-surface-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/15"
       >
         {primary ? (
-          <Image
+          <ImageWithSkeleton
             src={primary.url}
             alt={primary.alt || product.name}
             fill
