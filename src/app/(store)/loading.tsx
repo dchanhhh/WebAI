@@ -1,19 +1,35 @@
 import { Container } from "@/components/ui/Container";
+import { Skeleton } from "@/components/ui/Skeleton";
+import { SectionHeadingSkeleton } from "@/components/ui/SectionHeadingSkeleton";
+import { ProductGridSkeleton } from "@/components/product/ProductGridSkeleton";
 
+/**
+ * Skeleton dự phòng cho các trang trong (store) chưa có `loading.tsx` riêng
+ * (trang chủ, giỏ hàng, thanh toán, giới thiệu, liên hệ, tra cứu đơn…). Các
+ * trang này có bố cục rất khác nhau nên khung này mô phỏng trang chủ — nơi
+ * gọi nhiều truy vấn DB nhất (LatestCollection, CollectionTiles, BlogTeaser)
+ * và dễ chạm skeleton nhất: một khối hero + các dải section xen kẽ nền
+ * (design.md "nhịp nền bg → surface → bg"), thay vì giả một lưới sản phẩm cố
+ * định như trước — vốn sai hoàn toàn với những trang không có lưới.
+ */
 export default function Loading() {
   return (
-    <Container className="py-16 lg:py-24">
-      <div className="h-6 w-40 animate-pulse bg-surface-2" />
-      <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6 lg:grid-cols-4 lg:gap-8">
-        {Array.from({ length: 8 }).map((_, i) => (
-          <div key={i}>
-            <div className="aspect-[3/4] animate-pulse bg-surface-2" />
-            <div className="mt-3 h-3 w-16 animate-pulse bg-surface-2" />
-            <div className="mt-2 h-4 w-full animate-pulse bg-surface-2" />
-            <div className="mt-2 h-4 w-20 animate-pulse bg-surface-2" />
-          </div>
-        ))}
-      </div>
-    </Container>
+    <>
+      <Skeleton className="min-h-[420px] w-full md:min-h-[560px] lg:min-h-[640px]" />
+
+      <section className="py-16 lg:py-24">
+        <Container>
+          <SectionHeadingSkeleton />
+          <ProductGridSkeleton count={4} />
+        </Container>
+      </section>
+
+      <section className="bg-surface py-16 lg:py-24">
+        <Container>
+          <SectionHeadingSkeleton />
+          <ProductGridSkeleton count={4} />
+        </Container>
+      </section>
+    </>
   );
 }
