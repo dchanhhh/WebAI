@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Category } from "@prisma/client";
 import { cn } from "@/lib/utils";
+import { IconClose } from "@/components/ui/icons";
 import {
   PRICE_BUCKETS,
   buildShopHref,
@@ -51,6 +52,23 @@ export function ShopFilters({
 }) {
   const inner = (
     <>
+      {query.q ? (
+        <Group title="Từ khoá">
+          <li className="flex items-center justify-between gap-2 py-1">
+            <span className="truncate text-sm text-ink-soft" title={query.q}>
+              “{query.q}”
+            </span>
+            <Link
+              href={buildShopHref(query, { q: null }, basePath)}
+              aria-label={`Xoá từ khoá "${query.q}"`}
+              className="grid h-11 w-11 shrink-0 -my-2 -mr-3 place-items-center text-ink-soft hover:text-accent"
+            >
+              <IconClose />
+            </Link>
+          </li>
+        </Group>
+      ) : null}
+
       <Group title="Danh mục">
         <Row href={buildShopHref(query, { category: null }, basePath)} active={!query.category}>
           Tất cả sản phẩm

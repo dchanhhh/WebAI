@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -15,15 +15,23 @@ export function Header() {
   const count = useCart(selectCount);
   const [mounted, setMounted] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => setMounted(true), []);
-  useEffect(() => setMenuOpen(false), [pathname]);
+  useEffect(() => {
+    setMenuOpen(false);
+    setSearchOpen(false);
+  }, [pathname]);
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
   }, [menuOpen]);
+  useEffect(() => {
+    if (searchOpen) searchInputRef.current?.focus();
+  }, [searchOpen]);
 
   return (
     <header className="sticky top-0 z-50 bg-bg">
@@ -70,13 +78,16 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-1">
-            <Link
-              href="/shop"
-              aria-label="Tìm kiếm"
+            <button
+              type="button"
+              aria-label={searchOpen ? "Đóng tìm kiếm" : "Tìm kiếm"}
+              aria-expanded={searchOpen}
+              aria-controls="header-search-panel"
+              onClick={() => setSearchOpen((o) => !o)}
               className="grid h-11 w-11 place-items-center text-ink hover:text-accent"
             >
-              <IconSearch />
-            </Link>
+              {searchOpen ? <IconClose /> : <IconSearch />}
+            </button>
             <Link
               href="/tra-cuu-don-hang"
               aria-label="Tra cứu đơn hàng"
@@ -98,6 +109,50 @@ export function Header() {
               ) : null}
             </button>
           </div>
+        </div>
+      </div>
+
+      {/* Ô tìm kiếm — mở/đóng bằng nút kính lúp, submit GET tới /shop */}
+      <div
+        id="header-search-panel"
+        aria-hidden={!searchOpen}
+        className={cn(
+          "grid overflow-hidden border-line bg-bg transition-[grid-template-rows] duration-200 ease-standard",
+          searchOpen ? "grid-rows-[1fr] border-b" : "grid-rows-[0fr]",
+        )}
+      >
+        <div className="min-h-0">
+          <form
+            action="/shop"
+            method="GET"
+            role="search"
+            className="container flex items-center gap-2 py-3"
+            onSubmit={() => setSearchOpen(false)}
+          >
+            <label htmlFor="header-search-input" className="sr-only">
+              Tìm sản phẩm
+            </label>
+            <input
+              ref={searchInputRef}
+              id="header-search-input"
+              type="search"
+              name="q"
+              placeholder="Tìm sản phẩm..."
+              tabIndex={searchOpen ? 0 : -1}
+              className="h-11 w-full rounded-sm border border-line bg-bg px-3 text-base text-ink placeholder:text-muted transition-colors focus-visible:outline-none focus-visible:border-ink focus-visible:ring-2 focus-visible:ring-ink/15"
+              onKeyDown={(e) => {
+                if (e.key === "Escape") setSearchOpen(false);
+              }}
+            />
+            <button
+              type="submit"
+              aria-label="Tìm kiếm"
+              tabIndex={searchOpen ? 0 : -1}
+              className="grid h-11 w-11 shrink-0 place-items-center text-ink hover:text-accent"
+            >
+              <IconSearch />
+            </button>
+          </form>
         </div>
       </div>
 

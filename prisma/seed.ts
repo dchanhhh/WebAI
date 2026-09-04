@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { normalizeVn } from "../src/lib/utils";
 
 const prisma = new PrismaClient();
 
@@ -290,6 +291,7 @@ async function main() {
       data: {
         slug: p.slug,
         name: p.name,
+        nameNormalized: normalizeVn(p.name),
         description: p.description,
         priceVnd: p.priceVnd,
         salePriceVnd: p.salePriceVnd ?? null,

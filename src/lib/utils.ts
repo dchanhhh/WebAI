@@ -18,6 +18,18 @@ export function slugify(input: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
+/** Chuẩn hoá chuỗi tiếng Việt: bỏ dấu + hạ chữ thường, dùng để tìm kiếm không phân biệt dấu. */
+export function normalizeVn(input: string): string {
+  return input
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "d")
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, " ");
+}
+
 /** Parse JSON array string an toàn (dùng cho Product.sizes / Product.colors). */
 export function parseStringArray(value: string | null | undefined): string[] {
   if (!value) return [];
