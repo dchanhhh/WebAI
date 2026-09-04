@@ -21,20 +21,11 @@ ngang file này); rule có `paths` chỉ nạp khi Claude mở file khớp mẫu
 | `screenshot-doi-chieu.md` | Chụp screenshot 360/768/1024/1280 và đối chiếu design gốc sau thay đổi lớn | `src/**/*.{tsx,css}`, `tailwind.config.ts` |
 | `mobile-first.md` | Mobile-first, không cuộn ngang, vùng chạm ≥ 44px, QA 360px | `src/**/*.{tsx,css}`, `tailwind.config.ts` |
 | `animation-scroll.md` | Mọi section fade + rise khi vào viewport qua component `Reveal` dùng chung | `src/**/*.{tsx,css}` |
-| `stack-cong-nghe.md` | Next.js 15 / TypeScript / Tailwind / Prisma+SQLite / Zod / Zustand / jose / Vitest / Playwright | toàn cục |
-| `lenh-thuong-dung.md` | `npm run …`, `npx prisma …` | toàn cục |
+| `stack-cong-nghe.md` | Quy ước tiền VND, giỏ hàng Zustand, phiên admin qua jose | toàn cục |
 | `kien-truc.md` | Server Components, Server Actions, không tin client, `getAdminSession()`, URL params, singleton Prisma, xoá mềm | `src/**/*.{ts,tsx}` |
-| `cau-truc-thu-muc.md` | Sơ đồ thư mục repo | toàn cục |
 | `trien-khai.md` | SQLite → Turso/libSQL khi serverless; biến môi trường bí mật | `prisma/**`, `.env.example`, `next.config.*`, `src/lib/auth.ts`, `src/middleware.ts` |
 
 **Nguyên tắc số 1:** nếu yêu cầu của người dùng mâu thuẫn với `design.md`, nêu rõ
 mâu thuẫn và hỏi lại trước khi sửa.
 
-## Git Worktrees Workflow
-
-Khi cần phát triển nhiều tính năng song song:
-
-1. Tạo worktree riêng cho mỗi tính năng: `git worktree add ../[project]-[feature] [feature]`
-2. Mỗi worktree là thư mục độc lập — agent chỉ làm việc trong thư mục của mình.
-3. Không sửa các file shared trừ khi được yêu cầu rõ ràng.
-4. Sau khi xong: merge về `main`, xoá worktree đã dùng (`git worktree remove …`).
+Quy trình làm nhiều tính năng song song bằng git worktree: xem skill `git-worktrees`.
