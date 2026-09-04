@@ -95,6 +95,11 @@ export default async function ProductPage({
                   imageUrl: product.images[0]?.url,
                   sizes: product.sizeList,
                   colors: product.colorList,
+                  variants: product.variants.map((v) => ({
+                    size: v.size,
+                    color: v.color,
+                    stock: v.stock,
+                  })),
                 }}
               />
             </div>

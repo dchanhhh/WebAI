@@ -20,6 +20,7 @@ export default async function AdminProductsPage({
     include: {
       category: { select: { name: true } },
       images: { orderBy: { sortOrder: "asc" }, take: 1 },
+      variants: { select: { stock: true } },
     },
   });
 
@@ -61,7 +62,9 @@ export default async function AdminProductsPage({
             </tr>
           </thead>
           <tbody className="divide-y divide-line">
-            {products.map((p) => (
+            {products.map((p) => {
+              const stock = p.variants.reduce((s, v) => s + v.stock, 0);
+              return (
               <tr key={p.id} className="hover:bg-surface">
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-3">
@@ -86,7 +89,7 @@ export default async function AdminProductsPage({
                     formatVnd(p.priceVnd)
                   )}
                 </td>
-                <td className={`px-4 py-3 ${p.stock <= 5 ? "text-sale" : ""}`}>{p.stock}</td>
+                <td className={`px-4 py-3 ${stock <= 5 ? "text-sale" : ""}`}>{stock}</td>
                 <td className="px-4 py-3">
                   {p.isActive ? (
                     <span className="text-success">Đang bán</span>
@@ -108,7 +111,8 @@ export default async function AdminProductsPage({
                   </div>
                 </td>
               </tr>
-            ))}
+              );
+            })}
             {products.length === 0 ? (
               <tr>
                 <td colSpan={6} className="px-4 py-10 text-center text-muted">

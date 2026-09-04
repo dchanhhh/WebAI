@@ -29,12 +29,16 @@ export async function createOrder(input: CheckoutInput): Promise<CreateOrderResu
   const productIds = [...new Set(input.items.map((i) => i.productId))];
   const products = await prisma.product.findMany({
     where: { id: { in: productIds }, isActive: true },
-    include: { images: { orderBy: { sortOrder: "asc" }, take: 1 } },
+    include: {
+      images: { orderBy: { sortOrder: "asc" }, take: 1 },
+      variants: true,
+    },
   });
   const byId = new Map(products.map((p) => [p.id, p]));
 
   type Line = {
     product: (typeof products)[number];
+    variantId: string;
     qty: number;
     size?: string;
     color?: string;
@@ -44,11 +48,17 @@ export async function createOrder(input: CheckoutInput): Promise<CreateOrderResu
   for (const item of input.items) {
     const p = byId.get(item.productId);
     if (!p) return { ok: false, error: "Một sản phẩm trong giỏ không còn khả dụng" };
-    if (p.stock < item.qty) {
-      return { ok: false, error: `"${p.name}" chỉ còn ${p.stock} sản phẩm` };
+    // Chuẩn hoá undefined -> "" để khớp với quy ước lưu variant trong DB.
+    const size = item.size ?? "";
+    const color = item.color ?? "";
+    const variant = p.variants.find((v) => v.size === size && v.color === color);
+    if (!variant) return { ok: false, error: "Một sản phẩm trong giỏ không còn khả dụng" };
+    if (variant.stock < item.qty) {
+      return { ok: false, error: `"${p.name}" chỉ còn ${variant.stock} sản phẩm` };
     }
     valid.push({
       product: p,
+      variantId: variant.id,
       qty: item.qty,
       size: item.size,
       color: item.color,
@@ -66,8 +76,8 @@ export async function createOrder(input: CheckoutInput): Promise<CreateOrderResu
     try {
       await prisma.$transaction(async (tx) => {
         for (const l of valid) {
-          const updated = await tx.product.updateMany({
-            where: { id: l.product.id, stock: { gte: l.qty } },
+          const updated = await tx.productVariant.updateMany({
+            where: { id: l.variantId, stock: { gte: l.qty } },
             data: { stock: { decrement: l.qty } },
           });
           if (updated.count === 0) {
