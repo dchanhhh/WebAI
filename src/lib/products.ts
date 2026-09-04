@@ -1,7 +1,7 @@
 import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { PAGE_SIZE } from "@/lib/constants";
-import { parseStringArray } from "@/lib/utils";
+import { parseStringArray, normalizeVn } from "@/lib/utils";
 
 export type ProductListItem = {
   id: string;
@@ -82,7 +82,7 @@ export async function listProducts(params: ListProductsParams = {}) {
   }
   if (params.search) {
     where.OR = [
-      { name: { contains: params.search } },
+      { nameNormalized: { contains: normalizeVn(params.search) } },
       { description: { contains: params.search } },
     ];
   }

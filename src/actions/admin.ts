@@ -10,7 +10,7 @@ import {
   destroySession,
 } from "@/lib/auth";
 import { loginSchema, productSchema, categorySchema } from "@/lib/validators";
-import { slugify } from "@/lib/utils";
+import { slugify, normalizeVn } from "@/lib/utils";
 import { ORDER_STATUS_KEYS } from "@/lib/constants";
 
 export type ActionState = { ok: boolean; message?: string; fieldErrors?: Record<string, string> };
@@ -111,6 +111,7 @@ export async function saveProductAction(
 
   const data = {
     name: d.name,
+    nameNormalized: normalizeVn(d.name),
     slug,
     description: d.description,
     categoryId: d.categoryId,

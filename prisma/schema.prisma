@@ -23,27 +23,29 @@ model Category {
 }
 
 model Product {
-  id           String         @id @default(cuid())
-  name         String
-  slug         String         @unique
-  description  String
-  priceVnd     Int
-  salePriceVnd Int?
-  stock        Int            @default(0)
-  sizes        String         @default("[]") // JSON array các size, vd ["S","M","L"]
-  colors       String         @default("[]") // JSON array tên màu, vd ["Đen","Trắng"]
-  isActive     Boolean        @default(true)
-  isNew        Boolean        @default(false)
-  isFeatured   Boolean        @default(false)
-  categoryId   String
-  category     Category       @relation(fields: [categoryId], references: [id])
-  images       ProductImage[]
-  orderItems   OrderItem[]
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
+  id             String         @id @default(cuid())
+  name           String
+  nameNormalized String         @default("") // bỏ dấu + lowercase, dùng để tìm kiếm không phân biệt dấu
+  slug           String         @unique
+  description    String
+  priceVnd       Int
+  salePriceVnd   Int?
+  stock          Int            @default(0)
+  sizes          String         @default("[]") // JSON array các size, vd ["S","M","L"]
+  colors         String         @default("[]") // JSON array tên màu, vd ["Đen","Trắng"]
+  isActive       Boolean        @default(true)
+  isNew          Boolean        @default(false)
+  isFeatured     Boolean        @default(false)
+  categoryId     String
+  category       Category       @relation(fields: [categoryId], references: [id])
+  images         ProductImage[]
+  orderItems     OrderItem[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
 
   @@index([categoryId])
   @@index([isActive])
+  @@index([nameNormalized])
 }
 
 model ProductImage {
