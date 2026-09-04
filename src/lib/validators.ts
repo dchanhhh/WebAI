@@ -70,7 +70,15 @@ export const productSchema = z
         const n = typeof v === "number" ? v : Number(String(v).replace(/[^\d]/g, ""));
         return Number.isFinite(n) && n > 0 ? n : null;
       }),
-    stock: intFromString,
+    variants: z
+      .array(
+        z.object({
+          size: z.string().trim().default(""),
+          color: z.string().trim().default(""),
+          stock: intFromString,
+        }),
+      )
+      .min(1, "Cần ít nhất một biến thể tồn kho"),
     sizes: z.array(z.string().trim().min(1)).default([]),
     colors: z.array(z.string().trim().min(1)).default([]),
     images: z.array(z.string().trim().min(1)).default([]),

@@ -87,6 +87,13 @@ export async function saveProductAction(
   await assertAdmin();
   const id = String(formData.get("id") || "");
 
+  let variantsInput: unknown;
+  try {
+    variantsInput = JSON.parse(String(formData.get("variants") || "[]"));
+  } catch {
+    variantsInput = [];
+  }
+
   const parsed = productSchema.safeParse({
     name: formData.get("name"),
     slug: formData.get("slug") || undefined,
@@ -94,7 +101,7 @@ export async function saveProductAction(
     categoryId: formData.get("categoryId"),
     priceVnd: formData.get("priceVnd"),
     salePriceVnd: formData.get("salePriceVnd"),
-    stock: formData.get("stock"),
+    variants: variantsInput,
     sizes: parseList(formData.get("sizes")),
     colors: parseList(formData.get("colors")),
     images: parseList(formData.get("images")),
@@ -116,7 +123,6 @@ export async function saveProductAction(
     categoryId: d.categoryId,
     priceVnd: d.priceVnd,
     salePriceVnd: d.salePriceVnd,
-    stock: d.stock,
     sizes: JSON.stringify(d.sizes),
     colors: JSON.stringify(d.colors),
     isActive: d.isActive,
@@ -125,17 +131,19 @@ export async function saveProductAction(
   };
 
   const images = d.images.map((url, i) => ({ url, alt: d.name, sortOrder: i }));
+  const variants = d.variants.map((v) => ({ size: v.size, color: v.color, stock: v.stock }));
 
   if (id) {
     await prisma.$transaction([
       prisma.productImage.deleteMany({ where: { productId: id } }),
+      prisma.productVariant.deleteMany({ where: { productId: id } }),
       prisma.product.update({
         where: { id },
-        data: { ...data, images: { create: images } },
+        data: { ...data, images: { create: images }, variants: { create: variants } },
       }),
     ]);
   } else {
-    await prisma.product.create({ data: { ...data, images: { create: images } } });
+    await prisma.product.create({ data: { ...data, images: { create: images }, variants: { create: variants } } });
   }
 
   revalidatePath("/admin/san-pham");

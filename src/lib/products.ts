@@ -1,4 +1,4 @@
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "@/generated/prisma";
 import { prisma } from "@/lib/prisma";
 import { PAGE_SIZE } from "@/lib/constants";
 import { parseStringArray } from "@/lib/utils";
@@ -23,12 +23,12 @@ function toListItem(p: {
   name: string;
   priceVnd: number;
   salePriceVnd: number | null;
-  stock: number;
   isNew: boolean;
   sizes: string;
   colors: string;
   category: { name: string };
   images: { url: string; alt: string }[];
+  variants: { stock: number }[];
 }): ProductListItem {
   return {
     id: p.id,
@@ -36,7 +36,7 @@ function toListItem(p: {
     name: p.name,
     priceVnd: p.priceVnd,
     salePriceVnd: p.salePriceVnd,
-    stock: p.stock,
+    stock: p.variants.reduce((sum, v) => sum + v.stock, 0),
     categoryName: p.category.name,
     isNew: p.isNew,
     sizeList: parseStringArray(p.sizes),
@@ -97,6 +97,7 @@ export async function listProducts(params: ListProductsParams = {}) {
       include: {
         category: { select: { name: true } },
         images: { orderBy: { sortOrder: "asc" }, select: { url: true, alt: true } },
+        variants: { select: { stock: true } },
       },
     }),
   ]);
@@ -118,11 +119,13 @@ export async function getProductBySlug(slug: string) {
     include: {
       category: { select: { name: true, slug: true } },
       images: { orderBy: { sortOrder: "asc" } },
+      variants: true,
     },
   });
   if (!p) return null;
   return {
     ...p,
+    stock: p.variants.reduce((sum, v) => sum + v.stock, 0),
     sizeList: parseStringArray(p.sizes),
     colorList: parseStringArray(p.colors),
   };
@@ -136,6 +139,7 @@ export async function getFeaturedProducts(limit = 4) {
     include: {
       category: { select: { name: true } },
       images: { orderBy: { sortOrder: "asc" }, select: { url: true, alt: true } },
+      variants: { select: { stock: true } },
     },
   });
   return rows.map(toListItem);
@@ -149,6 +153,7 @@ export async function getRelatedProducts(productId: string, categoryId: string, 
     include: {
       category: { select: { name: true } },
       images: { orderBy: { sortOrder: "asc" }, select: { url: true, alt: true } },
+      variants: { select: { stock: true } },
     },
   });
   return rows.map(toListItem);

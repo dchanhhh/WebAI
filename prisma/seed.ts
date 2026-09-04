@@ -1,9 +1,26 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../src/generated/prisma/index.js";
 
 const prisma = new PrismaClient();
 
 const img = (slug: string, n: 1 | 2, ext: "jpg" | "png" = "jpg") =>
   `/images/products/${slug}-${n}.${ext}`;
+
+/** Sinh danh sách tổ hợp size × màu. Rỗng cả hai -> 1 tổ hợp tồn kho chung "". */
+function buildCombos(sizes: string[], colors: string[]): { size: string; color: string }[] {
+  if (sizes.length === 0 && colors.length === 0) return [{ size: "", color: "" }];
+  if (sizes.length === 0) return colors.map((color) => ({ size: "", color }));
+  if (colors.length === 0) return sizes.map((size) => ({ size, color: "" }));
+  const combos: { size: string; color: string }[] = [];
+  for (const size of sizes) for (const color of colors) combos.push({ size, color });
+  return combos;
+}
+
+/** Chia đều `total` cho `n` phần, số dư dồn vào các phần đầu, tổng luôn khớp `total`. */
+function splitEvenly(total: number, n: number): number[] {
+  const base = Math.floor(total / n);
+  const remainder = total - base * n;
+  return Array.from({ length: n }, (_, i) => base + (i < remainder ? 1 : 0));
+}
 
 type SeedProduct = {
   slug: string;
@@ -286,6 +303,8 @@ async function main() {
 
   console.log("Tạo sản phẩm...");
   for (const p of PRODUCTS) {
+    const combos = buildCombos(p.sizes, p.colors);
+    const shares = splitEvenly(p.stock, combos.length);
     await prisma.product.create({
       data: {
         slug: p.slug,
@@ -293,7 +312,6 @@ async function main() {
         description: p.description,
         priceVnd: p.priceVnd,
         salePriceVnd: p.salePriceVnd ?? null,
-        stock: p.stock,
         sizes: JSON.stringify(p.sizes),
         colors: JSON.stringify(p.colors),
         isNew: p.isNew ?? false,
@@ -305,6 +323,9 @@ async function main() {
             { url: img(p.slug, 1, p.ext), alt: p.name, sortOrder: 0 },
             { url: img(p.slug, 2, p.ext), alt: `${p.name} — góc khác`, sortOrder: 1 },
           ],
+        },
+        variants: {
+          create: combos.map((c, i) => ({ size: c.size, color: c.color, stock: shares[i] })),
         },
       },
     });

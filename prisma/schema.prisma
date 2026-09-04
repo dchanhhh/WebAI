@@ -3,6 +3,10 @@
 
 generator client {
   provider = "prisma-client-js"
+  // Output riêng trong worktree này (không dùng node_modules/.prisma/client
+  // dùng chung qua junction) để tránh xung đột/khoá file (EPERM) với các
+  // dev server khác đang chạy trên node_modules dùng chung giữa các worktree.
+  output = "../src/generated/prisma"
 }
 
 datasource db {
@@ -23,27 +27,39 @@ model Category {
 }
 
 model Product {
-  id           String         @id @default(cuid())
+  id           String           @id @default(cuid())
   name         String
-  slug         String         @unique
+  slug         String           @unique
   description  String
   priceVnd     Int
   salePriceVnd Int?
-  stock        Int            @default(0)
-  sizes        String         @default("[]") // JSON array các size, vd ["S","M","L"]
-  colors       String         @default("[]") // JSON array tên màu, vd ["Đen","Trắng"]
-  isActive     Boolean        @default(true)
-  isNew        Boolean        @default(false)
-  isFeatured   Boolean        @default(false)
+  sizes        String           @default("[]") // JSON array các size, vd ["S","M","L"]
+  colors       String           @default("[]") // JSON array tên màu, vd ["Đen","Trắng"]
+  isActive     Boolean          @default(true)
+  isNew        Boolean          @default(false)
+  isFeatured   Boolean          @default(false)
   categoryId   String
-  category     Category       @relation(fields: [categoryId], references: [id])
+  category     Category         @relation(fields: [categoryId], references: [id])
   images       ProductImage[]
+  variants     ProductVariant[]
   orderItems   OrderItem[]
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
 
   @@index([categoryId])
   @@index([isActive])
+}
+
+model ProductVariant {
+  id        String  @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  size      String  @default("") // "" nghĩa là sản phẩm không phân loại theo size
+  color     String  @default("") // "" nghĩa là sản phẩm không phân loại theo màu
+  stock     Int     @default(0)
+
+  @@unique([productId, size, color])
+  @@index([productId])
 }
 
 model ProductImage {

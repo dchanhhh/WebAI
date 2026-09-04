@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { IconMinus, IconPlus } from "@/components/ui/icons";
 import { useCart } from "@/lib/cart-store";
 import { cn } from "@/lib/utils";
+
+type Variant = { size: string; color: string; stock: number };
 
 type Props = {
   product: {
@@ -17,6 +19,7 @@ type Props = {
     imageUrl?: string;
     sizes: string[];
     colors: string[];
+    variants: Variant[];
   };
 };
 
@@ -32,12 +35,30 @@ export function AddToCartForm({ product }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [added, setAdded] = useState(false);
 
-  const soldOut = product.stock <= 0;
-  const maxQty = Math.max(1, Math.min(99, product.stock || 99));
+  // Đã chọn đủ size/màu (nếu sản phẩm có phân loại) để xác định đúng biến thể.
+  const fullySelected =
+    (product.sizes.length === 0 || Boolean(size)) && (product.colors.length === 0 || Boolean(color));
+  const selectedVariant = useMemo(() => {
+    if (!fullySelected) return undefined;
+    return product.variants.find((v) => v.size === (size ?? "") && v.color === (color ?? ""));
+  }, [product.variants, fullySelected, size, color]);
+
+  // Tồn kho của ĐÚNG tổ hợp đang chọn (null = chưa chọn đủ, dùng tổng tồn kho làm tham khảo).
+  const variantStock = selectedVariant ? selectedVariant.stock : null;
+  const soldOut = fullySelected ? !selectedVariant || selectedVariant.stock <= 0 : product.stock <= 0;
+  const maxQty = Math.max(1, Math.min(99, (variantStock ?? product.stock) || 99));
+
+  // Khi đổi lựa chọn size/màu, giới hạn lại số lượng đang chọn theo tồn kho tổ hợp mới.
+  useEffect(() => {
+    setQty((q) => Math.min(q, maxQty));
+  }, [maxQty]);
 
   function handleAdd() {
     if (product.sizes.length > 0 && !size) return setError("Vui lòng chọn size");
     if (product.colors.length > 0 && !color) return setError("Vui lòng chọn màu");
+    if (!selectedVariant || selectedVariant.stock <= 0) {
+      return setError("Tổ hợp size/màu này đã hết hàng");
+    }
     setError(null);
     add(
       {
@@ -92,8 +113,8 @@ export function AddToCartForm({ product }: Props) {
             <IconPlus width={15} height={15} />
           </button>
         </div>
-        {product.stock > 0 && product.stock <= 5 ? (
-          <p className="mt-2 text-sm text-sale">Chỉ còn {product.stock} sản phẩm</p>
+        {variantStock !== null && variantStock > 0 && variantStock <= 5 ? (
+          <p className="mt-2 text-sm text-sale">Chỉ còn {variantStock} sản phẩm</p>
         ) : null}
       </div>
 

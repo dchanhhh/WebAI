@@ -9,15 +9,13 @@ import { OrderStatusBadge } from "@/components/ui/Badge";
 export const metadata: Metadata = { title: "Tổng quan" };
 
 export default async function AdminDashboard() {
-  const [statusCounts, revenueAgg, productCount, lowStock, recentOrders] = await Promise.all([
+  const [statusCounts, revenueAgg, productCount, activeProducts, recentOrders] = await Promise.all([
     prisma.order.groupBy({ by: ["status"], _count: { _all: true } }),
     prisma.order.aggregate({ _sum: { totalVnd: true }, where: { status: { not: "cancelled" } } }),
     prisma.product.count({ where: { isActive: true } }),
     prisma.product.findMany({
-      where: { isActive: true, stock: { lte: 5 } },
-      orderBy: { stock: "asc" },
-      take: 6,
-      select: { id: true, name: true, stock: true, slug: true },
+      where: { isActive: true },
+      select: { id: true, name: true, slug: true, variants: { select: { stock: true } } },
     }),
     prisma.order.findMany({
       orderBy: { createdAt: "desc" },
@@ -25,6 +23,13 @@ export default async function AdminDashboard() {
       select: { id: true, code: true, customerName: true, totalVnd: true, status: true, createdAt: true },
     }),
   ]);
+
+  // Tồn kho không còn nằm trực tiếp trên Product -> cộng dồn từ ProductVariant rồi lọc/sắp xếp ở tầng app.
+  const lowStock = activeProducts
+    .map((p) => ({ id: p.id, name: p.name, slug: p.slug, stock: p.variants.reduce((s, v) => s + v.stock, 0) }))
+    .filter((p) => p.stock <= 5)
+    .sort((a, b) => a.stock - b.stock)
+    .slice(0, 6);
 
   const countByStatus = (s: string) =>
     statusCounts.find((c) => c.status === s)?._count._all ?? 0;

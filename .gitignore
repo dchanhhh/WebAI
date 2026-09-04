@@ -23,6 +23,7 @@ next-env.d.ts
 /prisma/dev.db-journal
 *.sqlite
 *.sqlite3
+/src/generated/prisma
 
 # Uploads (ảnh sản phẩm admin tải lên)
 /public/uploads/*
