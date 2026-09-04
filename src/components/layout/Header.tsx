@@ -8,6 +8,9 @@ import { NAV_LINKS, SITE_NAME } from "@/lib/constants";
 import { useCart, selectCount } from "@/lib/cart-store";
 import { IconBag, IconMenu, IconClose, IconSearch, IconUser } from "@/components/ui/icons";
 import { cn } from "@/lib/utils";
+import { formatVnd } from "@/lib/money";
+import { getSearchSuggestions } from "@/actions/search";
+import type { ProductSuggestion } from "@/lib/products";
 
 export function Header() {
   const pathname = usePathname();
@@ -16,12 +19,15 @@ export function Header() {
   const [mounted, setMounted] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const [suggestions, setSuggestions] = useState<ProductSuggestion[]>([]);
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const latestQueryRef = useRef("");
 
   useEffect(() => setMounted(true), []);
   useEffect(() => {
     setMenuOpen(false);
-    setSearchOpen(false);
+    closeSearch();
   }, [pathname]);
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
@@ -33,6 +39,28 @@ export function Header() {
     if (searchOpen) searchInputRef.current?.focus();
   }, [searchOpen]);
 
+  // Gợi ý sản phẩm tức thời khi gõ (debounce ~250ms, bỏ qua kết quả cũ trả về muộn).
+  useEffect(() => {
+    const q = query.trim();
+    latestQueryRef.current = q;
+    if (q.length < 2) {
+      setSuggestions([]);
+      return;
+    }
+    const timer = setTimeout(() => {
+      getSearchSuggestions(q).then((results) => {
+        if (latestQueryRef.current === q) setSuggestions(results);
+      });
+    }, 250);
+    return () => clearTimeout(timer);
+  }, [query]);
+
+  function closeSearch() {
+    setSearchOpen(false);
+    setQuery("");
+    setSuggestions([]);
+  }
+
   return (
     <header className="sticky top-0 z-50 bg-bg">
       <div className="border-b border-line">
@@ -42,7 +70,10 @@ export function Header() {
             className="grid h-11 w-11 place-items-center text-ink md:hidden"
             aria-label="Mở menu"
             aria-expanded={menuOpen}
-            onClick={() => setMenuOpen(true)}
+            onClick={() => {
+              closeSearch();
+              setMenuOpen(true);
+            }}
           >
             <IconMenu />
           </button>
@@ -83,7 +114,14 @@ export function Header() {
               aria-label={searchOpen ? "Đóng tìm kiếm" : "Tìm kiếm"}
               aria-expanded={searchOpen}
               aria-controls="header-search-panel"
-              onClick={() => setSearchOpen((o) => !o)}
+              onClick={() => {
+                if (searchOpen) {
+                  closeSearch();
+                } else {
+                  setMenuOpen(false);
+                  setSearchOpen(true);
+                }
+              }}
               className="grid h-11 w-11 place-items-center text-ink hover:text-accent"
             >
               {searchOpen ? <IconClose /> : <IconSearch />}
@@ -112,47 +150,104 @@ export function Header() {
         </div>
       </div>
 
-      {/* Ô tìm kiếm — mở/đóng bằng nút kính lúp, submit GET tới /shop */}
+      {/* Lớp bấm-ra-ngoài-để-đóng phía sau panel tìm kiếm (trong suốt) */}
+      <button
+        type="button"
+        aria-label="Đóng tìm kiếm"
+        tabIndex={-1}
+        onClick={() => closeSearch()}
+        className={cn("fixed inset-0 z-40", searchOpen ? "" : "pointer-events-none")}
+      />
+
+      {/* Ô tìm kiếm — khối nhỏ nổi đè lên nội dung bên dưới, không có nền toàn chiều ngang */}
       <div
         id="header-search-panel"
         aria-hidden={!searchOpen}
-        className={cn(
-          "grid overflow-hidden border-line bg-bg transition-[grid-template-rows] duration-200 ease-standard",
-          searchOpen ? "grid-rows-[1fr] border-b" : "grid-rows-[0fr]",
-        )}
+        className="pointer-events-none absolute inset-x-0 top-full z-50"
       >
-        <div className="min-h-0">
-          <form
-            action="/shop"
-            method="GET"
-            role="search"
-            className="container flex items-center gap-2 py-3"
-            onSubmit={() => setSearchOpen(false)}
+        <div className="container flex justify-center py-3 sm:justify-end">
+          <div
+            className={cn(
+              "pointer-events-auto w-full max-w-sm border border-line bg-bg shadow-xl transition-[opacity,transform] duration-[240ms] ease-standard motion-reduce:transition-none",
+              searchOpen ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0",
+            )}
           >
-            <label htmlFor="header-search-input" className="sr-only">
-              Tìm sản phẩm
-            </label>
-            <input
-              ref={searchInputRef}
-              id="header-search-input"
-              type="search"
-              name="q"
-              placeholder="Tìm sản phẩm..."
-              tabIndex={searchOpen ? 0 : -1}
-              className="h-11 w-full rounded-sm border border-line bg-bg px-3 text-base text-ink placeholder:text-muted transition-colors focus-visible:outline-none focus-visible:border-ink focus-visible:ring-2 focus-visible:ring-ink/15"
-              onKeyDown={(e) => {
-                if (e.key === "Escape") setSearchOpen(false);
-              }}
-            />
-            <button
-              type="submit"
-              aria-label="Tìm kiếm"
-              tabIndex={searchOpen ? 0 : -1}
-              className="grid h-11 w-11 shrink-0 place-items-center text-ink hover:text-accent"
+            <form
+              action="/shop"
+              method="GET"
+              role="search"
+              className="flex items-center gap-2 p-3"
             >
-              <IconSearch />
-            </button>
-          </form>
+              <label htmlFor="header-search-input" className="sr-only">
+                Tìm sản phẩm
+              </label>
+              <input
+                ref={searchInputRef}
+                id="header-search-input"
+                type="search"
+                name="q"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Tìm sản phẩm..."
+                autoComplete="off"
+                tabIndex={searchOpen ? 0 : -1}
+                className="h-11 w-full rounded-sm border border-line bg-bg px-3 text-sm text-ink placeholder:text-muted transition-colors focus-visible:outline-none focus-visible:border-ink focus-visible:ring-2 focus-visible:ring-ink/15"
+                onKeyDown={(e) => {
+                  if (e.key === "Escape") closeSearch();
+                }}
+              />
+              <button
+                type="submit"
+                aria-label="Tìm kiếm"
+                tabIndex={searchOpen ? 0 : -1}
+                className="grid h-11 w-11 shrink-0 place-items-center rounded-sm bg-ink text-bg transition-colors hover:bg-ink-soft"
+              >
+                <IconSearch width={17} height={17} />
+              </button>
+            </form>
+
+            {suggestions.length > 0 ? (
+              <ul
+                id="header-search-suggestions"
+                aria-label="Sản phẩm gợi ý"
+                className="divide-y divide-line border-t border-line"
+              >
+                {suggestions.map((p) => (
+                  <li key={p.id}>
+                    <Link
+                      href={`/san-pham/${p.slug}`}
+                      onClick={() => closeSearch()}
+                      tabIndex={searchOpen ? 0 : -1}
+                      className="flex items-center gap-3 px-3 py-2 hover:bg-surface"
+                    >
+                      <span className="relative block aspect-[3/4] w-10 shrink-0 overflow-hidden bg-surface">
+                        {p.imageUrl ? (
+                          <Image src={p.imageUrl} alt="" fill sizes="40px" className="object-cover" />
+                        ) : null}
+                      </span>
+                      <span className="min-w-0 flex-1">
+                        <span className="block truncate text-sm text-ink">{p.name}</span>
+                        <span className="mt-0.5 flex items-center gap-1.5">
+                          <span className="text-sm font-medium text-ink">
+                            {formatVnd(p.salePriceVnd ?? p.priceVnd)}
+                          </span>
+                          {p.salePriceVnd ? (
+                            <span className="text-xs text-muted line-through">
+                              {formatVnd(p.priceVnd)}
+                            </span>
+                          ) : null}
+                        </span>
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : query.trim().length >= 2 ? (
+              <p className="border-t border-line px-3 py-3 text-sm text-muted">
+                Không tìm thấy sản phẩm phù hợp.
+              </p>
+            ) : null}
+          </div>
         </div>
       </div>
 

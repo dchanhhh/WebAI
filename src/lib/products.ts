@@ -81,10 +81,7 @@ export async function listProducts(params: ListProductsParams = {}) {
     if (params.priceMax != null) where.priceVnd.lte = params.priceMax;
   }
   if (params.search) {
-    where.OR = [
-      { nameNormalized: { contains: normalizeVn(params.search) } },
-      { description: { contains: params.search } },
-    ];
+    where.nameNormalized = { contains: normalizeVn(params.search) };
   }
 
   const [total, rows] = await Promise.all([
@@ -157,6 +154,50 @@ export async function getRelatedProducts(productId: string, categoryId: string, 
     },
   });
   return rows.map(toListItem);
+}
+
+export type ProductSuggestion = {
+  id: string;
+  slug: string;
+  name: string;
+  priceVnd: number;
+  salePriceVnd: number | null;
+  imageUrl: string | null;
+};
+
+/** Gợi ý sản phẩm theo từ khoá, dùng cho ô tìm kiếm gợi ý tức thời (tối đa `limit` kết quả). */
+export async function searchProductSuggestions(
+  query: string,
+  limit = 5,
+): Promise<ProductSuggestion[]> {
+  const q = query.trim();
+  if (!q) return [];
+
+  const rows = await prisma.product.findMany({
+    where: {
+      isActive: true,
+      nameNormalized: { contains: normalizeVn(q) },
+    },
+    orderBy: { createdAt: "desc" },
+    take: limit,
+    select: {
+      id: true,
+      slug: true,
+      name: true,
+      priceVnd: true,
+      salePriceVnd: true,
+      images: { orderBy: { sortOrder: "asc" }, take: 1, select: { url: true } },
+    },
+  });
+
+  return rows.map((p) => ({
+    id: p.id,
+    slug: p.slug,
+    name: p.name,
+    priceVnd: p.priceVnd,
+    salePriceVnd: p.salePriceVnd,
+    imageUrl: p.images[0]?.url ?? null,
+  }));
 }
 
 export async function getAllCategories() {

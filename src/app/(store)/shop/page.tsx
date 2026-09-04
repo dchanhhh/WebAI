@@ -4,6 +4,7 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { Reveal } from "@/components/ui/Reveal";
 import { ShopFilters } from "@/components/product/ShopFilters";
+import { ShopSearchBox } from "@/components/product/ShopSearchBox";
 import { SortSelect } from "@/components/product/SortSelect";
 import { Pagination } from "@/components/ui/Pagination";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -58,7 +59,10 @@ export default async function ShopPage({
 
       <Container className="py-12 lg:py-16">
         <div className="grid gap-10 lg:grid-cols-[220px_1fr]">
-          <ShopFilters categories={categories} query={query} />
+          <div className="space-y-6">
+            <ShopSearchBox query={query} />
+            <ShopFilters categories={categories} query={query} />
+          </div>
 
           <div>
             <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
